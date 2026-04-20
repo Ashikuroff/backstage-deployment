@@ -11,7 +11,7 @@ backend:
   baseUrl: ${APP_BASE_URL}
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
-  listen: ':7007'
+  listen: '0.0.0.0:7007'
   cors:
     origin: ${APP_BASE_URL}
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
@@ -25,6 +25,9 @@ backend:
 auth:
   providers:
     guest: {}
+
+permission:
+  enabled: false
 
 techdocs:
   generator:
