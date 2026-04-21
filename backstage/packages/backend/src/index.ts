@@ -7,10 +7,6 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
-import {
-  authModule,
-  authProviders,
-} from '@backstage/plugin-auth-backend';
 
 const backend = createBackend();
 
@@ -30,17 +26,6 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
 backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
-backend.add(
-  authModule.create({
-    providers: {
-      github: authProviders.github.create({
-        signIn: {
-          resolver: authProviders.github.resolvers.usernameMatchingUserEntityName(),
-        },
-      }),
-    },
-  }),
-);
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
