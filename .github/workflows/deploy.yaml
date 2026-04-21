@@ -7,6 +7,8 @@ on:
       - feature-main
     paths:
       - backstage/**
+      - argocd-app.yaml
+      - k8s/**
       - .github/workflows/deploy.yaml
   workflow_dispatch:
 
@@ -20,7 +22,7 @@ concurrency:
 
 jobs:
   build-and-update-manifest:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, kind-runner]
 
     steps:
       - name: Checkout repository
@@ -32,8 +34,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: yarn
-          cache-dependency-path: backstage/yarn.lock
 
       - name: Install Backstage dependencies
         working-directory: backstage
@@ -81,7 +81,8 @@ jobs:
       - name: Update Kubernetes deployment image
         env:
           IMAGE: ${{ steps.image.outputs.image }}:${{ steps.image.outputs.tag }}
-        run: sed -i "s|image: .*|image: ${IMAGE}|" k8s/deployment.yaml
+        run: |
+          sed -i "s|image: .*|image: ${IMAGE}|" k8s/deployment.yaml
 
       - name: Commit GitOps manifest update
         run: |
@@ -95,3 +96,30 @@ jobs:
           git add k8s/deployment.yaml
           git commit -m "chore: update Backstage image to ${{ steps.image.outputs.tag }} [skip ci]"
           git push
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Deploy Kubernetes Objects
+        run: |
+          # If KUBECONFIG is provided (e.g. local testing), use it. 
+          # Otherwise, kubectl will use the in-cluster service account.
+          if [ -n "${{ secrets.KUBECONFIG }}" ]; then
+            mkdir -p ~/.kube
+            echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+            kubectl config use-context kind-kind-1cp-1worker
+          fi
+          
+          kubectl create namespace argocd || true
+          kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
+          kubectl wait --for=condition=Available deployment/argocd-repo-server -n argocd --timeout=300s
+          kubectl wait --for=jsonpath='{.status.readyReplicas}'=1 statefulset/argocd-application-controller -n argocd --timeout=300s
+          
+          kubectl apply -f argocd-app.yaml
+          sleep 60
+          kubectl get application -n argocd backstage || true
+          kubectl get pods -n backstage || true
+          kubectl get pods -A
