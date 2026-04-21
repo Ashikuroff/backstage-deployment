@@ -19,7 +19,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: backstage
-          image: docker.io/ashik9001/backstage:bootstrap
+          image: ghcr.io/ashikuroff/backstage:sha-c1ca7233ae0ce0bfa42f2c25eb3c8f9fee5e4d6e
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7007
