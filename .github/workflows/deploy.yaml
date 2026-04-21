@@ -101,27 +101,34 @@ jobs:
 
 
 
-      - name: Connect to k8s context
+      - name: Deploy Kubernetes Objects (if cluster accessible)
         run: |
-          mkdir -p ~/.kube
           if [ -n "${{ secrets.KUBECONFIG }}" ]; then
+            mkdir -p ~/.kube
             echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
           fi
+          
+          if ! kubectl config get-contexts kind-kind-1cp-1worker > /dev/null 2>&1; then
+             echo "======================================================================"
+             echo "NOTICE: The GitHub Action runner cannot access your local Mac's Kind cluster"
+             echo "because it is running in GitHub's isolated cloud environment."
+             echo "To deploy to your local desktop, run these commands manually on your Mac:"
+             echo "  kubectl create namespace argocd"
+             echo "  kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+             echo "  kubectl apply -f argocd-app.yaml"
+             echo "======================================================================"
+             exit 0
+          fi
+          
+          echo "Cluster is accessible! Deploying..."
           kubectl config use-context kind-kind-1cp-1worker
-
-      - name: Install ArgoCD
-        run: |
-          kubectl create namespace argocd
+          kubectl create namespace argocd || true
           kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
           kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
           kubectl wait --for=condition=Available deployment/argocd-repo-server -n argocd --timeout=300s
           kubectl wait --for=jsonpath='{.status.readyReplicas}'=1 statefulset/argocd-application-controller -n argocd --timeout=300s
-
-      - name: Deploy Backstage via ArgoCD
-        run: kubectl apply -f argocd-app.yaml
-
-      - name: Wait for Backstage App and Display Pods
-        run: |
+          
+          kubectl apply -f argocd-app.yaml
           sleep 60
           kubectl get application -n argocd backstage || true
           kubectl get pods -n backstage || true
