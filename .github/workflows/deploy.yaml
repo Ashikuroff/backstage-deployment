@@ -99,10 +99,4 @@ jobs:
           git commit -m "chore: update Backstage image to ${{ steps.image.outputs.tag }} [skip ci]"
           git push
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.28.0'
 
-      - name: Deploy ArgoCD Application
-        run: kubectl apply -f argocd-app.yaml
