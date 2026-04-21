@@ -64,6 +64,7 @@ spec:
           image: docker:dind
           securityContext:
             privileged: true
+          command: ["dockerd-entrypoint.sh", "--dns", "8.8.8.8"]
           env:
             - name: DOCKER_TLS_CERTDIR
               value: ""

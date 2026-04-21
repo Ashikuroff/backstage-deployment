@@ -77,6 +77,8 @@ jobs:
           tags: |
             ${{ steps.image.outputs.image }}:${{ steps.image.outputs.tag }}
             ${{ steps.image.outputs.image }}:latest
+          # Workaround for transient 502 errors
+          retry: 3
 
       - name: Update Kubernetes deployment image
         env:
