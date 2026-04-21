@@ -42,6 +42,8 @@ spec:
         - name: runner
           image: summerwind/actions-runner:latest
           env:
+            - name: REPO_URL
+              value: "https://github.com/Ashikuroff/backstage-deployment"
             - name: RUNNER_REPO
               value: "https://github.com/Ashikuroff/backstage-deployment"
             - name: RUNNER_NAME
