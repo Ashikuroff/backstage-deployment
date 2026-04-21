@@ -83,7 +83,6 @@ auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
     # See https://backstage.io/docs/auth/guest/provider
-    guest: {}
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
@@ -94,7 +93,6 @@ permission:
 
 signIn:
   providers:
-    - guest
     - github
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
