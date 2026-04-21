@@ -101,6 +101,14 @@ jobs:
 
 
 
+      - name: Connect to k8s context
+        run: |
+          mkdir -p ~/.kube
+          if [ -n "${{ secrets.KUBECONFIG }}" ]; then
+            echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          fi
+          kubectl config use-context kind-kind-1cp-1worker
+
       - name: Install ArgoCD
         run: |
           kubectl create namespace argocd
