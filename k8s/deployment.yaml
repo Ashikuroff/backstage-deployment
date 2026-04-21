@@ -32,9 +32,15 @@ spec:
             - name: NODE_ENV
               value: production
             - name: AUTH_GITHUB_CLIENT_ID
-              value: "Ov23liaCqvhltEGsOcev"
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-auth
+                  key: github_client_id
             - name: AUTH_GITHUB_CLIENT_SECRET
-              value: "bc4a6caba75fc08be856bcb8e1ad3bcea01c552a"
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-auth
+                  key: github_client_secret
           readinessProbe:
             tcpSocket:
               port: http

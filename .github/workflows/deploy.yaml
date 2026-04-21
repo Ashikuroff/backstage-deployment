@@ -104,6 +104,18 @@ jobs:
         with:
           version: 'latest'
 
+      - name: Apply GitHub auth secret
+        env:
+          GITHUB_CLIENT_ID: ${{ secrets.AUTH_GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.AUTH_GITHUB_CLIENT_SECRET }}
+        run: |
+          # Ensure the backstage namespace exists and apply a secret with GitHub OAuth credentials
+          kubectl create namespace backstage --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create secret generic backstage-auth \
+            --from-literal=github_client_id="${GITHUB_CLIENT_ID}" \
+            --from-literal=github_client_secret="${GITHUB_CLIENT_SECRET}" \
+            -n backstage --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Deploy Kubernetes Objects
         run: |
           # If KUBECONFIG is provided (e.g. local testing), use it. 
