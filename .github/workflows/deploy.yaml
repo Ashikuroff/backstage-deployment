@@ -107,7 +107,7 @@ jobs:
       - name: Install ArgoCD
         run: |
           kubectl create namespace argocd
-          kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
           kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
           kubectl wait --for=condition=Available deployment/argocd-repo-server -n argocd --timeout=300s
           kubectl wait --for=condition=Available deployment/argocd-application-controller -n argocd --timeout=300s
