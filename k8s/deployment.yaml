@@ -30,9 +30,9 @@ spec:
             - name: NODE_ENV
               value: production
             - name: AUTH_GITHUB_CLIENT_ID
-              value: "YOUR_CLIENT_ID"
+              value: "Ov23liaCqvhltEGsOcev"
             - name: AUTH_GITHUB_CLIENT_SECRET
-              value: "YOUR_CLIENT_SECRET"
+              value: "bc4a6caba75fc08be856bcb8e1ad3bcea01c552a"
           readinessProbe:
             tcpSocket:
               port: http
