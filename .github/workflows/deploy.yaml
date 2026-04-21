@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature-main
     paths:
       - backstage/**
       - .github/workflows/deploy.yaml
@@ -37,6 +38,10 @@ jobs:
       - name: Install Backstage dependencies
         working-directory: backstage
         run: node .yarn/releases/yarn-4.4.1.cjs install --immutable
+
+      - name: Run Tests
+        working-directory: backstage
+        run: node .yarn/releases/yarn-4.4.1.cjs test:all
 
       - name: Build Backstage backend bundle
         working-directory: backstage
