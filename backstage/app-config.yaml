@@ -84,13 +84,12 @@ auth:
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     github:
-      development:
-        clientId: ${AUTH_GITHUB_CLIENT_ID}
-        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
-              dangerouslyAllowSignInWithoutUserInCatalog: true
+      clientId: ${AUTH_GITHUB_CLIENT_ID}
+      clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+      signIn:
+        resolvers:
+          - resolver: usernameMatchingUserEntityName
+            dangerouslyAllowSignInWithoutUserInCatalog: true
 
 permission:
   enabled: false
