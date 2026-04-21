@@ -29,6 +29,10 @@ spec:
               value: http://localhost:7007
             - name: NODE_ENV
               value: production
+            - name: AUTH_GITHUB_CLIENT_ID
+              value: "YOUR_CLIENT_ID"
+            - name: AUTH_GITHUB_CLIENT_SECRET
+              value: "YOUR_CLIENT_SECRET"
           readinessProbe:
             tcpSocket:
               port: http
