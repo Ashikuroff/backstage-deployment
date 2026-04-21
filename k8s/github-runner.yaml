@@ -42,12 +42,14 @@ spec:
         - name: runner
           image: summerwind/actions-runner:latest
           env:
-            - name: REPO_URL
+            - name: RUNNER_REPO
               value: "https://github.com/Ashikuroff/backstage-deployment"
             - name: RUNNER_NAME
               value: "kind-cluster-runner"
             - name: RUNNER_LABELS
               value: "kind-runner"
+            - name: RUNNER_SCOPE
+              value: "repo"
             - name: RUNNER_TOKEN
               valueFrom:
                 secretKeyRef:
