@@ -99,10 +99,7 @@ jobs:
           git commit -m "chore: update Backstage image to ${{ steps.image.outputs.tag }} [skip ci]"
           git push
 
-      - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1.10.0
-        with:
-          cluster_name: kind-1cp-1worker
+
 
       - name: Install ArgoCD
         run: |
@@ -110,7 +107,7 @@ jobs:
           kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
           kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
           kubectl wait --for=condition=Available deployment/argocd-repo-server -n argocd --timeout=300s
-          kubectl wait --for=condition=Available deployment/argocd-application-controller -n argocd --timeout=300s
+          kubectl wait --for=jsonpath='{.status.readyReplicas}'=1 statefulset/argocd-application-controller -n argocd --timeout=300s
 
       - name: Deploy Backstage via ArgoCD
         run: kubectl apply -f argocd-app.yaml
