@@ -40,19 +40,21 @@ spec:
       serviceAccountName: github-runner-sa
       containers:
         - name: runner
-          image: summerwind/actions-runner:latest
+          image: myoung34/github-runner:latest
           env:
             - name: REPO_URL
               value: "https://github.com/Ashikuroff/backstage-deployment"
             - name: RUNNER_NAME
               value: "kind-cluster-runner"
-            - name: RUNNER_LABELS
+            - name: RUNNER_LABEL
               value: "kind-runner"
-            - name: GITHUB_TOKEN
+            - name: ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: runner-token
                   key: token
+          securityContext:
+            privileged: true
           volumeMounts:
             - name: dockersock
               mountPath: /var/run/docker.sock
