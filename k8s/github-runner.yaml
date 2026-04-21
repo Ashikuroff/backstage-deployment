@@ -46,8 +46,8 @@ spec:
               value: "https://github.com/Ashikuroff/backstage-deployment"
             - name: RUNNER_NAME
               value: "kind-cluster-runner"
-            - name: RUNNER_LABEL
-              value: "kind-runner"
+            - name: RUNNER_LABELS
+              value: "kind-runner,self-hosted"
             - name: ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
