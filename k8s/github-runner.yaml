@@ -58,7 +58,11 @@ spec:
           volumeMounts:
             - name: dockersock
               mountPath: /var/run/docker.sock
+            - name: runner-data
+              mountPath: /runner
       volumes:
         - name: dockersock
           hostPath:
             path: /var/run/docker.sock
+        - name: runner-data
+          emptyDir: {}
