@@ -19,12 +19,18 @@ backend:
 
   database:
     client: better-sqlite3
-    connection:
-      directory: /var/backstage
+    connection: ':memory:'
 
 auth:
   providers:
     guest: {}
+    github:
+      clientId: ${AUTH_GITHUB_CLIENT_ID}
+      clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+      signIn:
+        resolvers:
+          - resolver: usernameMatchingUserEntityName
+            dangerouslyAllowSignInWithoutUserInCatalog: true
 
 permission:
   enabled: false

@@ -17,6 +17,8 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
         - name: backstage
           image: ghcr.io/ashikuroff/backstage:sha-3ed75cf39944ec855301cd289db767a785cf6959
