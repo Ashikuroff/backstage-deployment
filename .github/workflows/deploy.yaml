@@ -7,6 +7,8 @@ on:
       - feature-main
     paths:
       - backstage/**
+      - argocd-app.yaml
+      - k8s/**
       - .github/workflows/deploy.yaml
   workflow_dispatch:
 
@@ -96,3 +98,11 @@ jobs:
           git add k8s/deployment.yaml
           git commit -m "chore: update Backstage image to ${{ steps.image.outputs.tag }} [skip ci]"
           git push
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Deploy ArgoCD Application
+        run: kubectl apply -f argocd-app.yaml
