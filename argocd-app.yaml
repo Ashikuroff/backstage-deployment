@@ -7,10 +7,10 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Ashikuroff/backstage-deployment.git
-    targetRevision: main
+    targetRevision: feature-main
     path: k8s
   destination:
-    server: https://kubernetes.default.svc
+    name: kind-kind-1cp-1worker
     namespace: backstage
   syncPolicy:
     automated:
