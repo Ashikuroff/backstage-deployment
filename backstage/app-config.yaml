@@ -84,6 +84,9 @@ auth:
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+
+permission:
+  enabled: false
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
   experimentalClientIdMetadataDocuments:
@@ -136,10 +139,7 @@ catalog:
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 
-# see https://backstage.io/docs/permissions/getting-started for more on the permission framework
-permission:
-  # setting this to `false` will disable permissions
-  enabled: true
+
 
 # see https://backstage.io/docs/ai/mcp-actions for more details
 mcpActions:
