@@ -81,7 +81,8 @@ jobs:
       - name: Update Kubernetes deployment image
         env:
           IMAGE: ${{ steps.image.outputs.image }}:${{ steps.image.outputs.tag }}
-        run: sed -i "s|image: .*|image: ${IMAGE}|" k8s/deployment.yaml
+        run: |
+          sed -i "s|image: .*|image: ${IMAGE}|" k8s/deployment.yaml
 
       - name: Commit GitOps manifest update
         run: |
