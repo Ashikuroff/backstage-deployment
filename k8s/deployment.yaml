@@ -21,7 +21,7 @@ spec:
         runAsGroup: 1000
       containers:
         - name: backstage
-          image: ghcr.io/ashikuroff/backstage:sha-b2b75d9f745132832138524ec9f5c4009306a7cb
+          image: ghcr.io/ashikuroff/backstage:sha-66034c870612872510aede93f659b89f179a0b41
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7007
