@@ -25,7 +25,7 @@ auth:
   providers:
     guest: {}
     github:
-      development:
+      production:
         clientId:
           $env: AUTH_GITHUB_CLIENT_ID
         clientSecret:
