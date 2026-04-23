@@ -3,8 +3,15 @@ kind: Ingress
 metadata:
   name: backstage
   namespace: backstage
+  annotations:
+    cert-manager.io/cluster-issuer: local-selfsigned
+    external-dns.alpha.kubernetes.io/hostname: backstage.localtest.me
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - backstage.localtest.me
+      secretName: backstage-tls
   rules:
     - host: backstage.localtest.me
       http:

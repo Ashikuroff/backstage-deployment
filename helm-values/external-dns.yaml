@@ -1,0 +1,14 @@
+provider:
+  name: inmemory
+
+sources:
+  - service
+  - ingress
+
+policy: upsert-only
+registry: noop
+
+domainFilters:
+  - localtest.me
+
+logLevel: info

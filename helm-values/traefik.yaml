@@ -1,0 +1,28 @@
+deployment:
+  replicas: 1
+
+gateway:
+  enabled: false
+
+gatewayClass:
+  enabled: false
+
+providers:
+  kubernetesGateway:
+    enabled: false
+  kubernetesIngress:
+    publishedService:
+      enabled: true
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+
+service:
+  type: NodePort
+
+ports:
+  web:
+    nodePort: 30080
+  websecure:
+    nodePort: 30443
