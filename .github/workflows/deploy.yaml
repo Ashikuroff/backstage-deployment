@@ -10,6 +10,7 @@ on:
       - argocd-app.yaml
       - argocd-cmd-params.yaml
       - argocd-ingress.yaml
+      - cert-manager-local-ca.yaml
       - k8s/**
       - .github/workflows/deploy.yaml
   workflow_dispatch:
@@ -130,6 +131,8 @@ jobs:
           
           kubectl create namespace argocd || true
           kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl apply -f k8s/local-selfsigned-clusterissuer.yaml
+          kubectl apply -f cert-manager-local-ca.yaml
           kubectl apply -f argocd-cmd-params.yaml
           kubectl rollout restart deployment/argocd-server -n argocd
           kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s

@@ -44,7 +44,7 @@ metadata:
   name: http-echo
   namespace: ingress-test
   annotations:
-    cert-manager.io/cluster-issuer: local-selfsigned
+    cert-manager.io/cluster-issuer: local-ca
     external-dns.alpha.kubernetes.io/hostname: echo.localtest.me
 spec:
   ingressClassName: traefik

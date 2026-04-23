@@ -4,7 +4,7 @@ metadata:
   name: backstage
   namespace: backstage
   annotations:
-    cert-manager.io/cluster-issuer: local-selfsigned
+    cert-manager.io/cluster-issuer: local-ca
     external-dns.alpha.kubernetes.io/hostname: backstage.localtest.me
 spec:
   ingressClassName: traefik
