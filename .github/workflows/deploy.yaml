@@ -8,6 +8,8 @@ on:
     paths:
       - backstage/**
       - argocd-app.yaml
+      - argocd-cmd-params.yaml
+      - argocd-ingress.yaml
       - k8s/**
       - .github/workflows/deploy.yaml
   workflow_dispatch:
@@ -128,12 +130,16 @@ jobs:
           
           kubectl create namespace argocd || true
           kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl apply -f argocd-cmd-params.yaml
+          kubectl rollout restart deployment/argocd-server -n argocd
           kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
           kubectl wait --for=condition=Available deployment/argocd-repo-server -n argocd --timeout=300s
           kubectl wait --for=jsonpath='{.status.readyReplicas}'=1 statefulset/argocd-application-controller -n argocd --timeout=300s
           
           kubectl apply -f argocd-app.yaml
+          kubectl apply -f argocd-ingress.yaml
           sleep 60
           kubectl get application -n argocd backstage || true
+          kubectl get ingress -n argocd argocd || true
           kubectl get pods -n backstage || true
           kubectl get pods -A
